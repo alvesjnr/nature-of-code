@@ -1,5 +1,5 @@
-#ifndef __VECTOR_H
-#define __VECTOR_H
+#ifndef __NVECTOR_H
+#define __NVECTOR_H
 
 typedef struct _2d_vector{
     double x;
@@ -12,7 +12,7 @@ extern nvector* nvector_new(double x, double y);
 extern nvector* nvector_copy(const nvector *v);
 extern nvector* nvector_del(nvector *v);
 
-extern void nvector_add(nvector *left, const nvector *right);
+extern void nvector_add(nvector *left, nvector *right);
 extern void nvector_sub(nvector *left, const nvector *right);
 extern void nvector_mul(nvector *left, double right);
 extern double nvector_dot(const nvector *left, const nvector *right);

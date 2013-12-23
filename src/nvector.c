@@ -1,5 +1,5 @@
 
-#include "vector.h"
+#include "nvector.h"
 
 #include <stdlib.h>
 #include <math.h>
@@ -29,7 +29,7 @@ nvector* nvector_del(nvector *v){
     free(v);
 }
 
-void nvector_add(nvector *left, const nvector *right){
+void nvector_add(nvector *left, nvector *right){
     left->x += right->x;
     left->y += right->y;
 }

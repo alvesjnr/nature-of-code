@@ -21,17 +21,27 @@ cdef extern from "nvector.h":
     # extern double nvector_angle( nvector *v)
 
 
-cdef class Vector:
+cdef class Vector(object):
     
-    cdef nvector* __vector
+    cdef nvector* _vector
+    cdef nvector* _aux_vector
 
     def __cinit__(self, double x=0.0, double y=0.0):
-        self.__vector = <nvector*> nvector_new(x,y)
+        self._vector = <nvector*> nvector_new(x,y)
     
     def __repr__(self):
-        return '<Vector({},{})>'.format(self.__vector.x, self.__vector.y)
+        return '<Vector({},{})>'.format(self._vector.x, self._vector.y)
 
-    def __add__(self, right):
-        cdef nvector *v = <nvector*> nvector_copy(<nvector*>self.__vector)
-        nvector_add( <nvector*> v, <nvector*>right._Vector__vector)
-        return Vector(x=v.x, y=v.y)
+    def __add__(Vector left, Vector right):
+        if isinstance(right, Vector) and isinstance(left, Vector):
+            # _aux_vector = nvector
+            left._aux_vector = <nvector*> nvector_copy(<nvector*>left._vector)
+            nvector_add( <nvector*> left._aux_vector, <nvector*>right._vector)
+
+            v = Vector(left._aux_vector.x, left._aux_vector.y)
+            return v
+        else:
+            return NotImplemented
+
+    def print_xy(self):
+        print self._vector.x, self._vector.y

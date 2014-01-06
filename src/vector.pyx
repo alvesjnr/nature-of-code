@@ -58,13 +58,13 @@ cdef class Vector:
     def __mul__(left, right):
 
         if isinstance(left, (int, float)) ^ isinstance(right, (int, float)):
-            #lets put int/float at left side
-            if isinstance(right, (int,float)):
+            #lets put int/float at right side
+            if isinstance(left, (int,float)):
                 right, left = left, right
-            return (<Vector>right).mul(left)
+            return (<Vector>left).mul(right)
         
         elif isinstance(right, Vector) and isinstance(left, Vector):
-            return (<Vector>left).dot(right)
+            return (<Vector>left).cross(right)
 
         else:
             return NotImplemented
@@ -74,7 +74,7 @@ cdef class Vector:
         nvector_mul(<nvector*>self._aux_vector, m)
         return Vector(self._aux_vector.x, self._aux_vector.y)
 
-    cdef dot(Vector self, Vector right):
+    def dot(Vector self, Vector right):
         return nvector_dot(<nvector*>self._vector, <nvector*>right._vector)
 
     cdef cross(Vector left, Vector right):
@@ -86,9 +86,9 @@ cdef class Vector:
     def __abs__(self):
         return self.mag()
 
-    cdef angle(Vector self):
+    def angle(Vector self):
         return nvector_angle(<nvector*> self._vector)
 
-    cdef angle_between(Vector self, Vector other):
+    def angle_between(Vector self, Vector other):
         return nvector_angle_between(<nvector*> self._vector, <nvector*> other._vector)
 

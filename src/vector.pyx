@@ -35,7 +35,7 @@ cdef class Vector:
 
     def __repr__(self):
         if self._vector.z == 0:
-            return '<Vector({},{})>'.format(self._vector.x, self._vector.y)
+            return '<Vector(x={}, y={})>'.format(self._vector.x, self._vector.y)
         else:
             return '<Vector(x={}, y={}, z={})>'.format(self._vector.x, self._vector.y, self._vector.z)
 

@@ -25,20 +25,20 @@ cdef class Vector:
     cdef nvector* _aux_vector
 
     def __cinit__(self, double x=0.0, double y=0.0):
-        self._vector = <nvector*> nvector_new(x,y)
+        self._vector = nvector_new(x,y)
 
     def __dealloc__(Vector self):
-        nvector_del(<nvector*> self._vector)
-        nvector_del(<nvector*> self._aux_vector)
-    
+        nvector_del(self._vector)
+        nvector_del(self._aux_vector)
+
     def __repr__(self):
         return '<Vector({},{})>'.format(self._vector.x, self._vector.y)
 
     def __add__(Vector left, Vector right):
 
         if isinstance(right, Vector) and isinstance(left, Vector):
-            left._aux_vector = <nvector*> nvector_copy(<nvector*>left._vector)
-            nvector_add( <nvector*> left._aux_vector, <nvector*>right._vector)
+            left._aux_vector = nvector_copy(left._vector)
+            nvector_add( left._aux_vector, right._vector)
 
             v = Vector(left._aux_vector.x, left._aux_vector.y)
             return v
@@ -50,8 +50,8 @@ cdef class Vector:
         #__sub__ is left - right
 
         if isinstance(right, Vector) and isinstance(left, Vector):
-            left._aux_vector = <nvector*> nvector_copy(<nvector*>left._vector)
-            nvector_sub( <nvector*> left._aux_vector, <nvector*>right._vector)
+            left._aux_vector = nvector_copy(left._vector)
+            nvector_sub( left._aux_vector, right._vector)
 
             v = Vector(left._aux_vector.x, left._aux_vector.y)
             return v
@@ -73,25 +73,25 @@ cdef class Vector:
             return NotImplemented
 
     cdef mul(Vector self, float m):
-        self._aux_vector = <nvector*> nvector_copy(<nvector*>self._vector)
-        nvector_mul(<nvector*>self._aux_vector, m)
+        self._aux_vector = nvector_copy(self._vector)
+        nvector_mul(self._aux_vector, m)
         return Vector(self._aux_vector.x, self._aux_vector.y)
 
     def dot(Vector self, Vector right):
-        return nvector_dot(<nvector*>self._vector, <nvector*>right._vector)
+        return nvector_dot(self._vector, right._vector)
 
     cdef cross(Vector left, Vector right):
         return NotImplemented
 
     cdef mag(Vector self):
-        return nvector_mag(<nvector*> self._vector)
+        return nvector_mag(self._vector)
 
     def __abs__(self):
         return self.mag()
 
     def angle(Vector self):
-        return nvector_angle(<nvector*> self._vector)
+        return nvector_angle(self._vector)
 
     def angle_between(Vector self, Vector other):
-        return nvector_angle_between(<nvector*> self._vector, <nvector*> other._vector)
+        return nvector_angle_between(self._vector,other._vector)
 

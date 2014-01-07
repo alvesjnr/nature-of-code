@@ -29,6 +29,28 @@ cdef class Vector:
     def __cinit__(self, double x=0.0, double y=0.0, double z=0.0):
         self._vector = nvector_new(x,y,z)
 
+    def getx(Vector self):
+        return self._vector.x
+
+    def setx(Vector self, float x):
+        self._vector.x = x
+
+    def gety(Vector self):
+        return self._vector.y
+
+    def sety(Vector self, float y):
+        self._vector.y = y
+
+    def getz(Vector self):
+        return self._vector.z
+
+    def setz(Vector self, float z):
+        self._vector.z = z
+
+    x = property(getx, setx, doc="The 'x' compoenent of the vector")
+    y = property(gety, sety, doc="The 'y' compoenent of the vector")
+    z = property(getz, setz, doc="The 'z' compoenent of the vector")
+
     def __dealloc__(Vector self):
         nvector_del(self._vector)
         nvector_del(self._aux_vector)
